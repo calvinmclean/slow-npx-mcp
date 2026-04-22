@@ -1,0 +1,23 @@
+{
+  "name": "slow-npx-mcp",
+  "version": "1.0.0",
+  "description": "MCP server with configurable startup delay for testing timeouts",
+  "main": "index.js",
+  "bin": {
+    "slow-npx-mcp": "index.js"
+  },
+  "scripts": {
+    "start": "node index.js"
+  },
+  "keywords": ["mcp", "testing"],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/calvinmclean/slow-npx-mcp"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.29.0"
+  }
+}
