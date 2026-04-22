@@ -1,8 +1,21 @@
 #!/usr/bin/env node
 
-const delaySeconds = parseInt(process.env.SLOW_MCP_DELAY || "60", 10);
+const delaySeconds = parseInt(process.argv[2] || "60", 10);
+
+let remaining = delaySeconds;
+process.stderr.write(`slow-npx-mcp: starting in ${remaining}s...\n`);
+
+const countdown = setInterval(() => {
+  remaining--;
+  if (remaining > 0) {
+    process.stderr.write(`slow-npx-mcp: ${remaining}s remaining...\n`);
+  }
+}, 1000);
 
 setTimeout(() => {
+  clearInterval(countdown);
+  process.stderr.write("slow-npx-mcp: starting server\n");
+
   const { McpServer } = require("@modelcontextprotocol/sdk/server/mcp.js");
   const {
     StdioServerTransport,
