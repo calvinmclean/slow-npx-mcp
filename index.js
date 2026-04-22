@@ -1,25 +1,23 @@
 #!/usr/bin/env node
 
+const { McpServer } = require("@modelcontextprotocol/sdk/server/mcp.js");
+const {
+  StdioServerTransport,
+} = require("@modelcontextprotocol/sdk/server/stdio.js");
+
 const delaySeconds = parseInt(process.argv[2] || "60", 10);
 
-let remaining = delaySeconds;
-process.stderr.write(`slow-npx-mcp: starting in ${remaining}s...\n`);
+function sleep(ms) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
 
-const countdown = setInterval(() => {
-  remaining--;
-  if (remaining > 0) {
+async function main() {
+  for (let remaining = delaySeconds; remaining > 0; remaining--) {
     process.stderr.write(`slow-npx-mcp: ${remaining}s remaining...\n`);
+    await sleep(1000);
   }
-}, 1000);
 
-setTimeout(() => {
-  clearInterval(countdown);
   process.stderr.write("slow-npx-mcp: starting server\n");
-
-  const { McpServer } = require("@modelcontextprotocol/sdk/server/mcp.js");
-  const {
-    StdioServerTransport,
-  } = require("@modelcontextprotocol/sdk/server/stdio.js");
 
   const server = new McpServer({
     name: "slow-server",
@@ -31,4 +29,6 @@ setTimeout(() => {
   }));
 
   server.connect(new StdioServerTransport());
-}, delaySeconds * 1000);
+}
+
+main();
